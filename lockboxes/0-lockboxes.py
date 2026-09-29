@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+"""Module for determining whether all lockboxes can be unlocked."""
 
 
 def canUnlockAll(boxes):
+    """Return True if all boxes can be unlocked, otherwise False."""
     unlocked = {0}
     to_visit = [0]
 
