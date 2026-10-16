@@ -1,49 +1,63 @@
 #!/usr/bin/python3
-"""
-A script that reads stdin line by line and computes metrics.
-"""
+"""Read HTTP logs and print cumulative statistics."""
+
+import re
 import sys
 
 
-def print_statistics(total_file_size, status_counts):
-    """Prints the accumulated metrics."""
-    print("File size: {}".format(total_file_size))
-    for code in sorted(status_counts.keys()):
-        if status_counts[code] > 0:
-            print("{}: {}".format(code, status_counts[code]))
+def print_stats(total_size, status_counts):
+    """Print total file size and status code counts."""
+    print("File size: {}".format(total_size))
+
+    for status in sorted(status_counts):
+        if status_counts[status] > 0:
+            print("{}: {}".format(status, status_counts[status]))
 
 
-if __name__ == "__main__":
-    total_file_size = 0
+def main():
+    """Process log lines from standard input."""
+    total_size = 0
     line_count = 0
-    valid_status_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
-    status_counts = {code: 0 for code in valid_status_codes}
+
+    status_counts = {
+        200: 0,
+        301: 0,
+        400: 0,
+        401: 0,
+        403: 0,
+        404: 0,
+        405: 0,
+        500: 0
+    }
+
+    pattern = re.compile(
+        r'^\d{1,3}(?:\.\d{1,3}){3} - '
+        r'\[[^\]\r\n]+\] '
+        r'"GET /projects/260 HTTP/1\.1" '
+        r'(\d+) (\d+)$'
+    )
 
     try:
         for line in sys.stdin:
             line_count += 1
-            parts = line.split()
-            
-            if len(parts) >= 2:
-                try:
-                    file_size = int(parts[-1])
-                    total_file_size += file_size
-                except ValueError:
-                    pass
 
-                try:
-                    status_code = parts[-2]
-                    if status_code in status_counts:
-                        status_counts[status_code] += 1
-                except IndexError:
-                    pass
+            match = pattern.fullmatch(line.rstrip("\r\n"))
 
-            if line_count == 10:
-                print_statistics(total_file_size, status_counts)
-                line_count = 0
+            if match:
+                status = int(match.group(1))
+                file_size = int(match.group(2))
+
+                total_size += file_size
+
+                if status in status_counts:
+                    status_counts[status] += 1
+
+            if line_count % 10 == 0:
+                print_stats(total_size, status_counts)
 
     except KeyboardInterrupt:
-        print_statistics(total_file_size, status_counts)
-        raise
+        print_stats(total_size, status_counts)
 
-    print_statistics(total_file_size, status_counts)
+
+if __name__ == "__main__":
+    main()
