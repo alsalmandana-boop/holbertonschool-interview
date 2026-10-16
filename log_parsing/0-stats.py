@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-"""Read HTTP logs and print cumulative statistics."""
+"""Parse HTTP logs and print statistics."""
 
-import re
 import sys
+import re
 
 
 def print_stats(total_size, status_counts):
@@ -15,7 +15,7 @@ def print_stats(total_size, status_counts):
 
 
 def main():
-    """Process log lines from standard input."""
+    """Read log lines and calculate statistics."""
     total_size = 0
     line_count = 0
 
@@ -57,6 +57,10 @@ def main():
 
     except KeyboardInterrupt:
         print_stats(total_size, status_counts)
+
+    else:
+        if line_count % 10 != 0:
+            print_stats(total_size, status_counts)
 
 
 if __name__ == "__main__":
