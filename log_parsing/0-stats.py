@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 """Parse HTTP logs and print statistics."""
 
-import sys
 import re
+import sys
 
 
 def print_stats(total_size, status_counts):
-    """Print total file size and status code counts."""
+    """Print total size and status code counts."""
     print("File size: {}".format(total_size))
 
     for status in sorted(status_counts):
@@ -44,10 +44,15 @@ def main():
             match = pattern.fullmatch(line.rstrip("\r\n"))
 
             if match:
-                status = int(match.group(1))
+                status_text = match.group(1)
                 file_size = int(match.group(2))
 
                 total_size += file_size
+
+                try:
+                    status = int(status_text)
+                except ValueError:
+                    status = None
 
                 if status in status_counts:
                     status_counts[status] += 1
