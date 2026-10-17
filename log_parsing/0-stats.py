@@ -31,10 +31,10 @@ def main():
     }
 
     pattern = re.compile(
-        r'^\d{1,3}(?:\.\d{1,3}){3} - '
-        r'\[[^\]\r\n]+\] '
-        r'"GET /projects/260 HTTP/1\.1" '
-        r'(\d+) (\d+)$'
+        r'^\S+\s+-\s+'
+        r'\[[^\]\r\n]+\]\s+'
+        r'"GET /projects/260 HTTP/1\.1"\s+'
+        r'(\d+)\s+(\d+)\s*$'
     )
 
     try:
@@ -54,9 +54,6 @@ def main():
 
             if line_count % 10 == 0:
                 print_stats(total_size, status_counts)
-
-    except KeyboardInterrupt:
-        print_stats(total_size, status_counts)
 
     except KeyboardInterrupt:
         print_stats(total_size, status_counts)
