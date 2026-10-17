@@ -34,7 +34,7 @@ def main():
         r'^\S+\s+-\s+'
         r'\[[^\]\r\n]+\]\s+'
         r'"GET /projects/260 HTTP/1\.1"\s+'
-        r'(\d+)\s+(\d+)\s*$'
+        r'(\S+)\s+(\d+)\s*$'
     )
 
     try:
