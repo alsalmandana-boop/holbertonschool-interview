@@ -1,10 +1,10 @@
-cat > 0-rotate_2d_matrix.py <<'EOF'
+
 #!/usr/bin/python3
 """Rotate a 2D matrix 90 degrees clockwise."""
 
 
 def rotate_2d_matrix(matrix):
-    """Rotate a square matrix 90 degrees clockwise in-place."""
+    """Rotate an n x n matrix 90 degrees clockwise in-place."""
     n = len(matrix)
 
     for i in range(n):
@@ -13,4 +13,3 @@ def rotate_2d_matrix(matrix):
 
     for row in matrix:
         row.reverse()
-EOF
