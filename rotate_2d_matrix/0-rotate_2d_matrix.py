@@ -1,10 +1,10 @@
 
 #!/usr/bin/python3
-"""Rotate an n x n matrix 90 degrees clockwise."""
-rotate_2d_matrix
+"""Module for rotating a 2D matrix 90 degrees clockwise."""
+
 
 def rotate_2d_matrix(matrix):
-    """Rotate a square matrix 90 degrees clockwise in-place."""
+    """Rotate an n x n matrix 90 degrees clockwise in-place."""
     n = len(matrix)
 
     for i in range(n):
