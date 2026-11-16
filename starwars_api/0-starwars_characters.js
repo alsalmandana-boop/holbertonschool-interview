@@ -44,4 +44,3 @@ request(url, function (error, response, body) {
 
   printCharacter(0);
 });
-
